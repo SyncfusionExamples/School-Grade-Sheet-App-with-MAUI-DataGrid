@@ -2,25 +2,23 @@
 
 namespace DataGridSample
 {
-    public class Grade
+    public class Grade : INotifyPropertyChanged
     {
         private int _id;
-        private string _studentName;
-        private string _subjectName;
+        private string _studentName = string.Empty;
+        private string _subjectName = string.Empty;
         private double _assignmentScore;
         private double _quizScore;
         private double _examScore;
         private double _projectScore;
-        private string _comments;
+        private string _comments = string.Empty;
 
         public int ID
         {
-            get
-            {
-                return _id;
-            }
+            get => _id;
             set
             {
+                if (_id == value) return;
                 _id = value;
                 OnPropertyChanged(nameof(ID));
             }
@@ -28,12 +26,10 @@ namespace DataGridSample
 
         public string StudentName
         {
-            get
-            {
-                return _studentName;
-            }
+            get => _studentName;
             set
             {
+                if (_studentName == value) return;
                 _studentName = value;
                 OnPropertyChanged(nameof(StudentName));
             }
@@ -41,12 +37,10 @@ namespace DataGridSample
 
         public string SubjectName
         {
-            get
-            {
-                return _subjectName;
-            }
+            get => _subjectName;
             set
             {
+                if (_subjectName == value) return;
                 _subjectName = value;
                 OnPropertyChanged(nameof(SubjectName));
             }
@@ -54,12 +48,10 @@ namespace DataGridSample
 
         public double AssignmentScore
         {
-            get
-            {
-                return _assignmentScore;
-            }
+            get => _assignmentScore;
             set
             {
+                if (_assignmentScore == value) return;
                 _assignmentScore = value;
                 OnPropertyChanged(nameof(AssignmentScore));
             }
@@ -67,12 +59,10 @@ namespace DataGridSample
 
         public double QuizScore
         {
-            get
-            {
-                return _quizScore;
-            }
+            get => _quizScore;
             set
             {
+                if (_quizScore == value) return;
                 _quizScore = value;
                 OnPropertyChanged(nameof(QuizScore));
             }
@@ -80,12 +70,10 @@ namespace DataGridSample
 
         public double ExamScore
         {
-            get
-            {
-                return _examScore;
-            }
+            get => _examScore;
             set
             {
+                if (_examScore == value) return;
                 _examScore = value;
                 OnPropertyChanged(nameof(ExamScore));
             }
@@ -93,12 +81,10 @@ namespace DataGridSample
 
         public double ProjectScore
         {
-            get
-            {
-                return _projectScore;
-            }
+            get => _projectScore;
             set
             {
+                if (_projectScore == value) return;
                 _projectScore = value;
                 OnPropertyChanged(nameof(ProjectScore));
             }
@@ -106,12 +92,10 @@ namespace DataGridSample
 
         public string Comments
         {
-            get
-            {
-                return _comments;
-            }
+            get => _comments;
             set
             {
+                if (_comments == value) return;
                 _comments = value;
                 OnPropertyChanged(nameof(Comments));
             }
@@ -126,8 +110,7 @@ namespace DataGridSample
 
         public double CalculateFinalGrade()
         {
-            // Example calculation - adjust based on actual needs and weightage
-            return (AssignmentScore + QuizScore + ExamScore + ProjectScore) / 4;
+            return (AssignmentScore + QuizScore + ExamScore + ProjectScore) / 4.0;
         }
     }
 }
