@@ -12,7 +12,10 @@ namespace DataGridSample
         private bool isOpenForFilterColumns;
         public bool IsOpenForFilterColumns
         {
-            get { return isOpenForFilterColumns; }
+            get
+            {
+                return isOpenForFilterColumns;
+            }
             set
             {
                 isOpenForFilterColumns = value;
@@ -23,7 +26,11 @@ namespace DataGridSample
         private string? filtertext = string.Empty;
         public string? FilterText
         {
-            get { return filtertext; }
+            get
+            {
+                return filtertext;
+            }
+
             set
             {
                 filtertext = value;
@@ -33,24 +40,27 @@ namespace DataGridSample
         }
 
         internal delegate void FilterChanged();
-
         internal FilterChanged? Filtertextchanged;
 
         private void OnFilterTextChanged()
         {
-            if(Filtertextchanged != null)
+            if (Filtertextchanged != null)
             {
                 Filtertextchanged();
             }
         }
 
-        private GridColumn? selectedColumn;
+        private GridColumn? selectedcolumn;
         public GridColumn? SelectedColumn
         {
-            get { return selectedColumn; }
+            get
+            {
+                return selectedcolumn;
+            }
             set
             {
-                selectedColumn = value;
+                selectedcolumn = value;
+                OnFilterTextChanged();
                 OnPropertyChanged(nameof(SelectedColumn));
             }
         }
@@ -58,23 +68,30 @@ namespace DataGridSample
         private string? selectedcondition = "Contains";
         public string? SelectedCondition
         {
-            get { return selectedcondition; }
-            set
+            get
             {
-                selectedcondition = value;
-                OnPropertyChanged(nameof(SelectedCondition));
+                return selectedcondition;
             }
-        }
-
-        public List<GridColumn> GridColumnsForFilter { get; set; } = new List<GridColumn>();
-        public List<string> SearchConditions { get; set; } = new List<string>();
-        public ICommand? FilterColumns { get ; set; }
-        public ICommand? ClearFilter { get; set; }
-
-        private bool isOpenForGroupColumns;
+            set
+            {  
+                selectedcondition = value;  
+                OnFilterTextChanged();  
+                OnPropertyChanged(nameof(SelectedCondition));  
+            }  
+        }  
+          
+        public List<GridColumn> GridColumnsForFilter { get; set; }  
+        public List<string> SearchConditions { get; set; }  
+        public ICommand FilterColumns { get; set; }  
+        public ICommand ClearFilter { get; set; }  
+          
+        private bool isOpenForGroupColumns;   
         public bool IsOpenForGroupColumns
         {
-            get { return isOpenForGroupColumns; }
+            get
+            {
+                return isOpenForGroupColumns;
+            }
             set
             {
                 isOpenForGroupColumns = value;
@@ -82,32 +99,40 @@ namespace DataGridSample
             }
         }
 
-        private GridColumn? selectedGroupColumn;
+        private GridColumn? selectedgroupColumn;
         public GridColumn? SelectedGroupColumn
         {
-            get { return selectedGroupColumn; }
+            get
+            {
+                return selectedgroupColumn;
+            }
             set
             {
-                selectedGroupColumn = value;
+                selectedgroupColumn = value;
                 ExecuteAddGrouping();
                 OnPropertyChanged(nameof(SelectedGroupColumn));
             }
         }
 
-        private GroupColumnDescriptionCollection? groupColumns;
+        private GroupColumnDescriptionCollection groupColumns;
         public GroupColumnDescriptionCollection GroupColumnDescriptions
         {
-            get { return groupColumns!; }
+            get
+            {
+                return groupColumns;
+            }
             set
             {
                 groupColumns = value;
-                OnPropertyChanged(nameof(GroupColumnDescriptions));
+                OnPropertyChanged(nameof(GroupColumnDescription));
             }
         }
 
-        public List<GridColumn> GridColumnsForGroup { get; set; } = new List<GridColumn>();
-        public ICommand? GroupColumns {  get; set; }
-        public ICommand? ClearGroup { get; set; }
+        public List<GridColumn> GridColumnsForGroup { get; set; }
+
+        public ICommand GroupColumns { get; set; }
+
+        public ICommand ClearGroup { get; set; }
 
         private void ExecuteAddGrouping()
         {
@@ -123,22 +148,26 @@ namespace DataGridSample
             }
         }
 
-        public List<GridColumn> GridColumns { get; set; } = new List<GridColumn>();
         private bool isOpenForSortColumns;
         public bool IsOpenForSortColumns
         {
-            get {  return isOpenForSortColumns; } 
-            set 
-            { 
-                isOpenForSortColumns = value; 
+            get
+            {
+                return isOpenForSortColumns;
+            }
+            set
+            {
+                isOpenForSortColumns = value;
                 OnPropertyChanged(nameof(IsOpenForSortColumns));
             }
         }
-
         private bool isOnState;
         public bool IsOnState
         {
-            get { return isOnState; }
+            get
+            {
+                return isOnState;
+            }
             set
             {
                 isOnState = value;
@@ -147,34 +176,38 @@ namespace DataGridSample
             }
         }
 
-        private GridColumn? selectedSortColumn;
+        private GridColumn? selectedsortcolumn;
         public GridColumn? SelectedSortColumn
         {
-            get { return selectedSortColumn; }
+            get
+            {
+                return selectedsortcolumn;
+            }
             set
             {
-                selectedSortColumn = value;
+                selectedsortcolumn = value;
                 ExecuteAddSorting();
                 OnPropertyChanged(nameof(SelectedSortColumn));
             }
         }
 
-        private SortColumnDescriptionCollection? sortColumns;
+        private SortColumnDescriptionCollection sortColumns;
         public SortColumnDescriptionCollection SortColumnDescriptions
         {
-            get { return sortColumns!; }
+            get
+            {
+                return sortColumns;
+            }
             set
             {
                 sortColumns = value;
-                OnPropertyChanged(nameof (SortColumnDescriptions));
+                OnPropertyChanged(nameof(SortColumnDescriptions));
             }
         }
 
-        public List<GridColumn> GridColumnsForSort { get; set; } = new List<GridColumn>();
-
-        public ICommand? SortColumns {  get; set; }
-        public ICommand? ClearSort { get; set; }
-
+        public List<GridColumn> GridColumnsForSort { get; set; }
+        public ICommand SortColumns { get; set; }
+        public ICommand ClearSort { get; set; }
         private void InitializeCommands()
         {
             FilterColumns = new Command(ExecuteFilterColumns);
@@ -183,17 +216,6 @@ namespace DataGridSample
             ClearGroup = new Command(ExecuteClearGroups);
             SortColumns = new Command(ExecuteSortColumns);
             ClearSort = new Command(ExecuteClearSorts);
-        }
-
-        private void ExecuteClearFilter(object obj)
-        {
-            SelectedCondition = string.Empty;
-            SelectedColumn = null;
-            FilterText = string.Empty;
-            Application.Current?.Dispatcher.Dispatch(() =>
-            {
-                IsOpenForFilterColumns = false;
-            });
         }
 
         private void PopulateSearchCriteria()
@@ -206,17 +228,32 @@ namespace DataGridSample
             };
         }
 
-        private void ExecuteFilterColumns(object obj)
+        private void ExecuteClearFilter()
+        {
+            SelectedCondition = string.Empty;
+            SelectedColumn = null;
+            FilterText = string.Empty;
+            Application.Current?.Dispatcher.Dispatch(() =>
+            {
+                IsOpenForFilterColumns = false;
+            });
+        }
+
+        private void ExecuteFilterColumns()
         {
             IsOpenForFilterColumns = true;
         }
 
+        private void ExecuteGroupColumns()
+        {
+            IsOpenForGroupColumns = true;
+        }
+
         private void ExecuteClearGroups()
         {
-            if(GroupColumnDescriptions == null)
-            {
+            if (GroupColumnDescriptions == null)
                 return;
-            }
+
             GroupColumnDescriptions.Clear();
             SelectedGroupColumn = null;
             Application.Current?.Dispatcher.Dispatch(() =>
@@ -225,29 +262,21 @@ namespace DataGridSample
             });
         }
 
-        private void ExecuteGroupColumns()
+        private void ExecuteSortColumns()
         {
-            IsOpenForGroupColumns = true;
+            IsOpenForSortColumns = true;
         }
 
-        private void ExecuteClearSorts(object obj)
+        private void ExecuteClearSorts()
         {
-            if(SortColumnDescriptions == null)
-            {
+            if (SortColumnDescriptions == null)
                 return;
-            }
-
             SortColumnDescriptions.Clear();
             SelectedSortColumn = null;
             Application.Current?.Dispatcher.Dispatch(() =>
             {
                 IsOpenForSortColumns = false;
             });
-        }
-
-        private void ExecuteSortColumns(object obj)
-        {
-            IsOpenForSortColumns = true;
         }
 
         private void InitializeSortGroupColumnDescriptions()
@@ -262,8 +291,8 @@ namespace DataGridSample
             var properties = type.GetProperties();
             GridColumns = new List<GridColumn>();
             GridColumnsForFilter = new List<GridColumn>();
-            GridColumnsForGroup = new List<GridColumn>();
             GridColumnsForSort = new List<GridColumn>();
+            GridColumnsForGroup = new List<GridColumn>();
             GridColumnsForFilter.Add(new GridColumn()
             {
                 Name = "All Columns",
@@ -283,14 +312,9 @@ namespace DataGridSample
             GridColumnsForGroup.AddRange(GridColumns);
             GridColumnsForSort.AddRange(GridColumns);
             GridColumns.RemoveAt(0);
-            var studentIdEntry = GridColumnsForFilter.FirstOrDefault(o => string.Equals(o.Name, "StudentID", StringComparison.OrdinalIgnoreCase));
-            if (studentIdEntry != null)
-            {
-                GridColumnsForFilter.Remove(studentIdEntry);
-            }
-            SelectedColumn = GridColumnsForFilter.FirstOrDefault();
+            GridColumnsForFilter.Remove(GridColumnsForFilter.FirstOrDefault(o => o.Name == "StudentID"));
             SelectedGroupColumn = GridColumnsForGroup.FirstOrDefault();
-            selectedSortColumn = GridColumnsForSort.FirstOrDefault();
+            SelectedSortColumn = GridColumnsForSort.FirstOrDefault();
         }
 
         private void ExecuteAddSorting()
@@ -298,13 +322,13 @@ namespace DataGridSample
             if (SelectedSortColumn != null)
             {
                 SortColumnDescriptions.Clear();
-                var sortColumnDescription = new SortColumnDescription() { ColumnName = this.SelectedSortColumn.Name, SortDirection = IsOnState ? ListSortDirection.Ascending : ListSortDirection.Descending };
+                var sortColumnDescription = new SortColumnDescription() { ColumnName = SelectedSortColumn.Name!, SortDirection = IsOnState ? ListSortDirection.Ascending : ListSortDirection.Descending };
                 SortColumnDescriptions.Add(sortColumnDescription);
             }
         }
 
-        private ColumnCollection? columns;
-        public ColumnCollection? Columns
+        private ColumnCollection columns;
+        public ColumnCollection Columns
         {
             get
             {
@@ -316,19 +340,9 @@ namespace DataGridSample
                 OnPropertyChanged(nameof(Columns));
             }
         }
-        public GradeSheetViewModel()
-        {
-            PopulateCollection();
-            InitializeColumns();
-            InitializeCommands();
-            PopulateSearchCriteria();
-            InitializeSortGroupColumnDescriptions();
-            PopulateColumnNames();
-        }
+        private ObservableCollection<Grade> grades;
 
-        private ObservableCollection<Grade>? grades;
-
-        public ObservableCollection<Grade>? Grades
+        public ObservableCollection<Grade> Grades
         {
             get
             {
@@ -340,7 +354,16 @@ namespace DataGridSample
                 OnPropertyChanged(nameof(Grades));
             }
         }
-
+        public GradeSheetViewModel()
+        {
+            PopulateCollection();
+            InitializeColumns();
+            InitializeCommands();
+            PopulateSearchCriteria();
+            InitializeSortGroupColumnDescriptions();
+            PopulateColumnNames();
+        }
+        public List<GridColumn> GridColumns { get; set; }
         string[] studentNames = { "Alice Johnson", "Bob Smith", "Charlie Brown", "Diana Prince", "Evan Davis",
                               "Faith Wilson", "George Harris", "Helen Moore", "Ian Clark", "Jenny Lewis",
                               "Kyle Robinson", "Laura Scott", "Martin King", "Nina Adams", "Oscar Perez",
@@ -350,6 +373,7 @@ namespace DataGridSample
 
         string[] subjectNames = { "Math", "Science", "History", "English", "Art" };
 
+        // Arrays for grade properties (length should match the number of students * subjects for expanded data)
         int[] assignmentScores = { 90, 78, 85, 92, 88, 95, 80, 86, 81, 82, 88, 79, 84, 92, 80, 90, 83, 87, 91, 85 };
         int[] quizScores = { 85, 82, 80, 88, 80, 90, 75, 87, 84, 79, 91, 82, 88, 90, 81, 92, 86, 89, 87, 88 };
         int[] examScores = { 88, 80, 87, 91, 85, 93, 79, 89, 86, 81, 89, 83, 87, 95, 83, 88, 85, 86, 88, 84 };
@@ -370,6 +394,7 @@ namespace DataGridSample
 
         private void PopulateCollection()
         {
+            // Populate Grades collection
             Grades = new ObservableCollection<Grade>();
             for (int i = 0; i < studentNames.Length; i++)
             {
@@ -452,83 +477,114 @@ namespace DataGridSample
             columns.Add(commentsColumn);
         }
 
-        public bool FilterRecords(object obj)
+        internal bool FilterRecords(object obj)
         {
-            if(SelectedColumn == null && string.IsNullOrEmpty(SelectedCondition))
-            {
+            if (SelectedColumn == null && string.IsNullOrEmpty(SelectedCondition))
                 return true;
-            }
 
             double res;
             bool checkNumeric = double.TryParse(FilterText, out res);
             var item = obj as Grade;
-            if (item != null && SelectedColumn != null)
+
+            if(item != null && FilterText!.Equals(string.Empty) && !string.IsNullOrEmpty(FilterText))
             {
-                if(checkNumeric && SelectedColumn.Name!.Equals("All Columns") && SelectedCondition!.Equals("Contains"))
+                return true;
+            }
+            else
+            {
+                if(item != null && SelectedColumn != null)
                 {
-                    bool result = MakeNumericFilter(item, SelectedColumn.Name, SelectedCondition);
-                    return result;
-                }
-                else if(SelectedColumn.Name!.Equals("All Columns"))
-                {
-                    if (item.ID!.ToString().ToLower().Contains(FilterText!.ToLower()) ||
-                    item.StudentName!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.SubjectName!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.AssignmentScore!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.QuizScore!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.ExamScore!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.ProjectScore!.ToString().ToLower().Contains(FilterText.ToLower()) ||
-                    item.Comments!.ToString().ToLower().Contains(FilterText.ToLower()))
+                    if(checkNumeric && !SelectedColumn.Name!.Equals("All Columns") && !SelectedCondition!.Equals("Contains"))
                     {
-                        return true;
+                        bool result = MakeNumericFilter(item, SelectedColumn.Name, SelectedCondition);
+                        return result;
                     }
-                    return false;
-                }
-                else
-                {
-                    bool result = MakeStringFilter(item, SelectedColumn.Name, SelectedCondition!);
-                    return result;
+                    else if(SelectedColumn.Name!.Equals("All Columns"))
+                    {
+                        if(SelectedCondition == "Contains")
+                        {
+                            bool contains = item.ID!.ToString().ToLower().Contains(this.FilterText!.ToLower()) ||
+                                item.StudentName!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.SubjectName!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.AssignmentScore!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.QuizScore!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.ExamScore!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.ProjectScore!.ToString().ToLower().Contains(this.FilterText.ToLower()) ||
+                                item.Comments!.ToString().ToLower().Contains(this.FilterText.ToLower());
+
+                            return contains;
+                        }
+                        else if(SelectedCondition == "Equals")
+                        {
+                            bool equals = item.ID!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.StudentName!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.SubjectName!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.AssignmentScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.QuizScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.ExamScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.ProjectScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) ||
+                                item.Comments!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase);
+
+                            return equals;
+                        }
+                        else if(SelectedCondition == "Does Not Equal")
+                        {
+                            bool notEquals = !item.ID!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.StudentName!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.SubjectName!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.AssignmentScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.QuizScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.ExamScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.ProjectScore!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase) &&
+                                !item.Comments!.ToString().Equals(this.FilterText, StringComparison.OrdinalIgnoreCase);
+
+                            return notEquals;
+                        }
+                    }
+                    else
+                    {
+                        bool result = MakeStringFilter(item, SelectedColumn.Name, SelectedCondition);
+                        return result;
+                    }
                 }
             }
 
             return false;
         }
 
-        private bool MakeStringFilter(Grade item, string name, string? selectedCondition)
+        private bool MakeStringFilter(Grade item, string option, string? condition) 
         {
-            var value = item.GetType().GetProperty(name);
+            var value = item.GetType().GetProperty(option);
             var exactValue = value!.GetValue(item, null);
             exactValue = exactValue!.ToString()!.ToLower();
             string text = FilterText!.ToLower();
             var methods = typeof(string).GetMethods();
 
-            if (methods.Count() != 0)
+            if(methods.Count() != 0)
             {
-                if (selectedCondition == "Contains")
+                if(condition == "Contains")
                 {
-                    var methodInfo = methods.FirstOrDefault(method => method.Name == selectedCondition);
-                    bool result = (bool)methodInfo!.Invoke(exactValue!, new object[]
-                    {
-                        text 
-                    })!;
+                    var methodInfo = methods.FirstOrDefault(method => method.Name == condition);
+                    bool result = (bool)methodInfo!.Invoke(exactValue!, new object[] { text });
                     return result;
                 }
                 else if(exactValue.ToString() == text.ToString())
                 {
                     bool result = string.Equals(exactValue.ToString(), text.ToString());
-                    if(selectedCondition == "Equals")
+                    if(condition == "Equals")
                     {
                         return result;
                     }
-                    else if(selectedCondition == "Does Not Equal")
+                    else if(condition == "Does Not Equal")
                     {
                         return false;
                     }
                 }
-                else if(selectedCondition == "Does Not Equal")
+                else if(condition == "Does Not Equal")
                 {
                     return true;
                 }
+
                 return false;
             }
             else
@@ -539,9 +595,8 @@ namespace DataGridSample
 
         private bool MakeNumericFilter(Grade item, string option, string condition)
         {
-            var prop = item.GetType().GetProperty(option);
-            if (prop == null) return false; 
-            var exactValue = prop.GetValue(item, null);
+            var value = item.GetType().GetProperty(option);
+            var exactValue = value!.GetValue(item, null);
             double res;
             bool checkNumeric = double.TryParse(exactValue!.ToString(), out res);
             if(checkNumeric)
@@ -559,11 +614,13 @@ namespace DataGridSample
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception e)
                         {
-                            Debug.WriteLine(ex.Message);
+                            Debug.WriteLine(e.Message);
                         }
+
                         break;
+
                     case "Does Not Equal":
                         try
                         {
@@ -572,46 +629,17 @@ namespace DataGridSample
                                 return true;
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception e)
                         {
-                            Debug.WriteLine(ex.Message);
-                            return true;
+                            Debug.WriteLine(e.Message);
+                            return false;
                         }
+
                         break;
                 }
             }
 
             return false;
         }
-    }
-
-    public class GridColumn : INotifyPropertyChanged
-    {
-        private string _name = string.Empty;
-        private string _displayName = string.Empty;
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (_name == value) return;
-                _name = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
-            }
-        }
-
-        public string DisplayName
-        {
-            get => _displayName;
-            set
-            {
-                if (_displayName == value) return;
-                _displayName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayName)));
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

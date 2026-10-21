@@ -5,14 +5,13 @@ This sample demonstrates how to build a School Grade Sheet app using the .NET MA
 ## Sample
 
 ```xaml
-    <datagrid:SfDataGrid x:Name="dataGrid" ColumnWidthMode="Auto" 
-                         SortColumnDescriptions="{Binding SortColumnDescriptions}"
+    <datagrid:SfDataGrid x:Name="dataGrid" ColumnWidthMode="Auto" AutoGenerateColumnsMode="None" 
+                         Grid.Row="1" SortColumnDescriptions="{Binding SortColumnDescriptions}"
                          GroupColumnDescriptions="{Binding GroupColumnDescriptions}"
-                         AutoGenerateColumnsMode="None" HeaderRowHeight="80"
                          Columns="{Binding Columns}" ItemsSource="{Binding Grades}">
-        <datagrid:SfDataGrid.Behaviors>
-            <local:FilteringBehavior/>
-        </datagrid:SfDataGrid.Behaviors>
+            <datagrid:SfDataGrid.Behaviors>
+                <local:FilteringBehavior/>
+            </datagrid:SfDataGrid.Behaviors>
     </datagrid:SfDataGrid>
 ```
 

@@ -5,20 +5,22 @@ namespace DataGridSample
     public class Grade : INotifyPropertyChanged
     {
         private int _id;
-        private string _studentName = string.Empty;
-        private string _subjectName = string.Empty;
+        private string? _studentName;
+        private string? _subjectName;
         private double _assignmentScore;
         private double _quizScore;
         private double _examScore;
         private double _projectScore;
-        private string _comments = string.Empty;
+        private string? _comments;
 
         public int ID
         {
-            get => _id;
+            get
+            {
+                return _id;
+            }
             set
             {
-                if (_id == value) return;
                 _id = value;
                 OnPropertyChanged(nameof(ID));
             }
@@ -26,10 +28,12 @@ namespace DataGridSample
 
         public string StudentName
         {
-            get => _studentName;
+            get
+            {
+                return _studentName!;
+            }
             set
             {
-                if (_studentName == value) return;
                 _studentName = value;
                 OnPropertyChanged(nameof(StudentName));
             }
@@ -37,10 +41,12 @@ namespace DataGridSample
 
         public string SubjectName
         {
-            get => _subjectName;
+            get
+            {
+                return _subjectName!;
+            }
             set
             {
-                if (_subjectName == value) return;
                 _subjectName = value;
                 OnPropertyChanged(nameof(SubjectName));
             }
@@ -48,10 +54,12 @@ namespace DataGridSample
 
         public double AssignmentScore
         {
-            get => _assignmentScore;
+            get
+            {
+                return _assignmentScore;
+            }
             set
             {
-                if (_assignmentScore == value) return;
                 _assignmentScore = value;
                 OnPropertyChanged(nameof(AssignmentScore));
             }
@@ -59,10 +67,12 @@ namespace DataGridSample
 
         public double QuizScore
         {
-            get => _quizScore;
+            get
+            {
+                return _quizScore;
+            }
             set
             {
-                if (_quizScore == value) return;
                 _quizScore = value;
                 OnPropertyChanged(nameof(QuizScore));
             }
@@ -70,10 +80,12 @@ namespace DataGridSample
 
         public double ExamScore
         {
-            get => _examScore;
+            get
+            {
+                return _examScore;
+            }
             set
             {
-                if (_examScore == value) return;
                 _examScore = value;
                 OnPropertyChanged(nameof(ExamScore));
             }
@@ -81,10 +93,12 @@ namespace DataGridSample
 
         public double ProjectScore
         {
-            get => _projectScore;
+            get
+            {
+                return _projectScore;
+            }
             set
             {
-                if (_projectScore == value) return;
                 _projectScore = value;
                 OnPropertyChanged(nameof(ProjectScore));
             }
@@ -92,10 +106,12 @@ namespace DataGridSample
 
         public string Comments
         {
-            get => _comments;
+            get
+            {
+                return _comments!;
+            }
             set
             {
-                if (_comments == value) return;
                 _comments = value;
                 OnPropertyChanged(nameof(Comments));
             }
@@ -110,7 +126,36 @@ namespace DataGridSample
 
         public double CalculateFinalGrade()
         {
-            return (AssignmentScore + QuizScore + ExamScore + ProjectScore) / 4.0;
+            return (AssignmentScore + QuizScore + ExamScore + ProjectScore) / 4;
         }
     }
+
+    public class GridColumn : INotifyPropertyChanged
+    {
+        private bool isChecked;
+        public bool IsChecked 
+        {
+            get
+            {
+                return isChecked;
+            }
+            set
+            {
+                isChecked = value;
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
+        public string? Name { get; set; }
+
+        public string? DisplayName { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        internal void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
 }
