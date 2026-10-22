@@ -1,16 +1,15 @@
-﻿using Syncfusion.Maui.DataGrid;
+using Syncfusion.Maui.DataGrid;
 
 namespace DataGridSample
 {
-    public class FilteringBehavior : Behavior<SfDataGrid>
-    {
-        SfDataGrid dataGrid;
-        GradeSheetViewModel gradeSheetViewModel;
-
+	public class FilteringBehavior : Behavior<SfDataGrid>
+	{
+		SfDataGrid dataGrid;
+		GradeSheetViewModel gradeSheetViewModel;
         protected override void OnAttachedTo(SfDataGrid bindable)
         {
             base.OnAttachedTo(bindable);
-            dataGrid = bindable;
+			dataGrid = bindable;
             dataGrid.Loaded += DataGridLoaded;
         }
 
@@ -22,9 +21,9 @@ namespace DataGridSample
 
         public void OnFilterChanged()
         {
-            if(dataGrid!.View != null)
+            if(dataGrid.View != null)
             {
-                dataGrid.View.Filter = gradeSheetViewModel!.FilterRecords;
+                dataGrid.View.Filter = gradeSheetViewModel.FilterRecords;
                 dataGrid.View.RefreshFilter();
             }
         }
